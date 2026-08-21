@@ -1,0 +1,36 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+
+  background: var(--surface-secondary);
+}
+
+.sidebar-container {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.main-area {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+  min-width: 0;
+}
+
+.header-container {
+  flex-shrink: 0;
+}
+
+.page-content {
+  flex: 1;
+
+  padding: 28px;
+
+  overflow-x: hidden;
+}

@@ -1,0 +1,674 @@
+<section class="tasks-page">
+  <!-- PAGE HEADER -->
+
+  <header class="tasks-header">
+    <div class="tasks-heading">
+      <span class="tasks-eyebrow"> TASK MANAGEMENT </span>
+
+      <h1>Tasks</h1>
+
+      <p>Create, assign, monitor, and manage tasks across your team.</p>
+    </div>
+
+    <!-- ASSIGN TASK BUTTON -->
+
+    <button type="button" class="assign-button" (click)="openAssignmentForm()">
+      <span>+</span>
+      Assign Task
+    </button>
+  </header>
+
+  <!-- TASK ASSIGNMENT MODAL -->
+
+  @if (showAssignmentForm) {
+    <div class="assignment-overlay">
+      <!-- MODAL / FLOATING PANEL -->
+
+      <section
+        class="assignment-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="assignment-title"
+      >
+        <!-- MODAL HEADER -->
+
+        <div class="assignment-header">
+          <div>
+            @if (editingTaskId) {
+              <span class="tasks-eyebrow"> EDIT TASK </span>
+
+              <h2 id="assignment-title">Edit Task</h2>
+
+              <p>Update the task details and save your changes.</p>
+            } @else {
+              <span class="tasks-eyebrow"> NEW TASK </span>
+
+              <h2 id="assignment-title">Assign a Task</h2>
+
+              <p>Create a task and assign it to a team member.</p>
+            }
+          </div>
+
+          <!-- CLOSE BUTTON -->
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="closeAssignmentForm()"
+            aria-label="Close assignment form"
+          >
+            ×
+          </button>
+        </div>
+
+        <!-- ASSIGNMENT FORM -->
+
+        <form [formGroup]="assignmentForm" (ngSubmit)="createTask()" class="assignment-form">
+
+
+          <!-- TASK TITLE -->
+
+          <div class="form-group">
+            <label for="task-title">
+              Task Title
+              <span>*</span>
+            </label>
+
+            <input
+              id="task-title"
+              type="text"
+              formControlName="title"
+              placeholder="Enter task title"
+            />
+
+            @if (isFieldInvalid('title')) {
+              <small class="form-error">
+                Task title is required and must contain at least 3 characters.
+              </small>
+            }
+          </div>
+
+          <!-- DESCRIPTION -->
+
+          <div class="form-group">
+            <label for="task-description">
+              Description
+              <span>*</span>
+            </label>
+
+            <textarea
+              id="task-description"
+              rows="5"
+              formControlName="description"
+              placeholder="Describe what needs to be completed..."
+            ></textarea>
+
+            @if (isFieldInvalid('description')) {
+              <small class="form-error">
+                Description is required and must contain at least 10 characters.
+              </small>
+            }
+          </div>
+
+          <!-- EMPLOYEE + PRIORITY -->
+
+          <div class="form-row">
+            <!-- ASSIGN EMPLOYEE -->
+
+            <div class="form-group">
+              <label for="assigned-employee">
+                Assign To
+                <span>*</span>
+              </label>
+
+              <select id="assigned-employee" formControlName="assignedEmployeeId">
+                <option value="">Select team member</option>
+
+                @for (employee of employees; track employee.id) {
+                  <option [value]="employee.id">
+                    {{ employee.name }} — {{ employee.department }}
+                  </option>
+                }
+              </select>
+
+              @if (isFieldInvalid('assignedEmployeeId')) {
+                <small class="form-error"> Please select a team member. </small>
+              }
+            </div>
+
+            <!-- PRIORITY -->
+
+            <div class="form-group">
+              <label for="task-priority">
+                Priority
+                <span>*</span>
+              </label>
+
+              <select id="task-priority" formControlName="priority">
+                @for (priority of priorities; track priority) {
+                  <option [value]="priority">
+                    {{ priority }}
+                  </option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <!-- DATES                                                -->
+
+          <div class="form-row">
+            <!-- DUE DATE -->
+
+            <div class="form-group">
+              <label for="due-date">
+                Due Date
+                <span>*</span>
+              </label>
+
+              <input id="due-date" type="datetime-local" formControlName="dueDate" />
+
+              @if (isFieldInvalid('dueDate')) {
+                <small class="form-error"> Please select a due date. </small>
+              }
+            </div>
+
+            <!-- ACCEPTANCE DEADLINE -->
+
+            <div class="form-group">
+              <label for="acceptance-deadline">
+                Acceptance Deadline
+                <span>*</span>
+              </label>
+
+              <input
+                id="acceptance-deadline"
+                type="datetime-local"
+                formControlName="acceptanceDeadline"
+              />
+
+              @if (isFieldInvalid('acceptanceDeadline')) {
+                <small class="form-error"> Please select an acceptance deadline. </small>
+              }
+            </div>
+          </div>
+
+          <!-- FORM INFORMATION                                 -->
+
+          <div class="form-info">
+            <span class="form-info-icon"> i </span>
+
+            <p>
+              The assigned employee will receive this task with
+              <strong>Pending Acceptance</strong> status.
+            </p>
+          </div>
+
+          <!-- FORM ACTIONS                                         -->
+
+          <div class="form-actions">
+            <!-- CANCEL -->
+
+            <button type="button" class="cancel-button" (click)="closeAssignmentForm()">
+              Cancel
+            </button>
+
+            <!-- CREATE / SAVE -->
+
+            <button type="submit" class="create-task-button">
+              @if (editingTaskId) {
+                <span>✓</span>
+                Save Changes
+              } @else {
+                <span>+</span>
+                Create Task
+              }
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- TASK DETAILS                                              -->
+  <!-- ========================================================= -->
+
+  @if (showTaskDetails && selectedTask) {
+    <div class="task-details-overlay">
+      <section class="task-details-card">
+        <!-- DETAILS HEADER -->
+
+        <div class="task-details-header">
+          <div>
+            <span class="tasks-eyebrow"> TASK DETAILS </span>
+
+            <h2>
+              {{ selectedTask.title }}
+            </h2>
+
+            <p>Task ID: {{ selectedTask.id }}</p>
+          </div>
+
+          <!-- CLOSE DETAILS -->
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="closeTaskDetails()"
+            aria-label="Close task details"
+          >
+            ×
+          </button>
+        </div>
+
+        <!-- DETAILS BODY -->
+
+        <div class="task-details-body">
+          <!-- DESCRIPTION -->
+
+          <div class="task-detail-section">
+            <span class="detail-label"> Description </span>
+
+            <p class="detail-description">
+              {{ selectedTask.description }}
+            </p>
+          </div>
+
+          <!-- INFORMATION GRID -->
+
+          <div class="task-details-grid">
+            <!-- ASSIGNEE -->
+
+            <div class="task-detail-item">
+              <span class="detail-label"> Assigned To </span>
+
+              <div class="detail-value assignee-detail">
+                <span class="assignee-avatar">
+                  {{ getEmployeeName(selectedTask.assignedEmployeeId).charAt(0) }}
+                </span>
+
+                <span>
+                  {{ getEmployeeName(selectedTask.assignedEmployeeId) }}
+                </span>
+              </div>
+            </div>
+
+            <!-- PRIORITY -->
+
+            <div class="task-detail-item">
+              <span class="detail-label"> Priority </span>
+
+              <span
+                class="priority-badge"
+                [class.priority-low]="selectedTask.priority === 'Low'"
+                [class.priority-medium]="selectedTask.priority === 'Medium'"
+                [class.priority-high]="selectedTask.priority === 'High'"
+                [class.priority-critical]="selectedTask.priority === 'Critical'"
+              >
+                {{ selectedTask.priority }}
+              </span>
+            </div>
+
+            <!-- STATUS -->
+
+            <div class="task-detail-item">
+              <span class="detail-label"> Status </span>
+
+              <span
+                class="status-badge"
+                [class.status-pending]="selectedTask.status === 'Pending Acceptance'"
+                [class.status-accepted]="selectedTask.status === 'Accepted'"
+                [class.status-progress]="selectedTask.status === 'In Progress'"
+                [class.status-review]="selectedTask.status === 'Under Review'"
+                [class.status-completed]="selectedTask.status === 'Completed'"
+                [class.status-declined]="selectedTask.status === 'Declined'"
+                [class.status-cancelled]="selectedTask.status === 'Cancelled'"
+              >
+                {{ selectedTask.status }}
+              </span>
+            </div>
+
+            <!-- DUE DATE -->
+
+            <div class="task-detail-item">
+              <span class="detail-label"> Due Date </span>
+
+              <span class="detail-value">
+                {{ selectedTask.dueDate | date: 'dd MMM yyyy, hh:mm a' }}
+              </span>
+            </div>
+
+            <!-- ACCEPTANCE DEADLINE -->
+
+            <div class="task-detail-item">
+              <span class="detail-label"> Acceptance Deadline </span>
+
+              <span class="detail-value">
+                {{ selectedTask.acceptanceDeadline | date: 'dd MMM yyyy, hh:mm a' }}
+              </span>
+            </div>
+
+            <!-- PROGRESS -->
+
+            <div class="task-detail-item">
+              <span class="detail-label"> Progress </span>
+
+              <div class="progress-detail">
+                <div class="progress-track">
+                  <div class="progress-fill" [style.width.%]="getTaskProgress(selectedTask)"></div>
+                </div>
+
+                <strong> {{ getTaskProgress(selectedTask) }}% </strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===================================================== -->
+          <!-- SUBTASKS                                               -->
+          <!-- ===================================================== -->
+
+          <div class="task-detail-section">
+            <div class="section-heading">
+              <div>
+                <span class="detail-label"> Subtasks </span>
+
+                <p>{{ selectedTask.subtasks.length }} subtasks</p>
+              </div>
+            </div>
+
+            @if (selectedTask.subtasks.length > 0) {
+              <div class="subtask-list">
+                @for (subTask of selectedTask.subtasks; track subTask.id) {
+                  <div class="subtask-item">
+                    <span class="subtask-status" [class.subtask-completed]="subTask.completed">
+                      {{ subTask.completed ? '✓' : '○' }}
+                    </span>
+
+                    <span [class.subtask-text-completed]="subTask.completed">
+                      {{ subTask.title }}
+                    </span>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="no-subtasks">No subtasks have been added to this task.</div>
+            }
+          </div>
+
+          <!-- ACTIVITY                                               -->
+
+          <div class="task-detail-section">
+            <div class="section-heading">
+              <div>
+                <span class="detail-label"> Activity </span>
+
+                <p>Recent task activity</p>
+              </div>
+            </div>
+
+            @if (selectedTask.activities.length > 0) {
+              <div class="activity-list">
+                @for (activity of selectedTask.activities; track activity.id) {
+                  <div class="activity-item">
+                    <div class="activity-dot"></div>
+
+                    <div class="activity-content">
+                      <strong>
+                        {{ activity.message }}
+                      </strong>
+
+                      <span>
+                        {{ activity.performedBy }}
+                        ·
+                        {{ activity.timestamp | date: 'dd MMM yyyy, hh:mm a' }}
+                      </span>
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="no-subtasks">No activity has been recorded yet.</div>
+            }
+          </div>
+        </div>
+
+        <!-- DETAILS FOOTER -->
+
+        <div class="task-details-footer">
+          <button type="button" class="cancel-button" (click)="closeTaskDetails()">Close</button>
+        </div>
+      </section>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- TASK SUMMARY                                               -->
+  <!-- ========================================================= -->
+
+  <section class="task-summary-grid">
+    <!-- TOTAL TASKS -->
+
+    <article class="summary-card">
+      <div class="summary-icon">✓</div>
+
+      <div>
+        <span class="summary-label"> Total Tasks </span>
+
+        <strong class="summary-value">
+          {{ totalTasks }}
+        </strong>
+      </div>
+    </article>
+
+    <!-- IN PROGRESS -->
+
+    <article class="summary-card">
+      <div class="summary-icon">◷</div>
+
+      <div>
+        <span class="summary-label"> In Progress </span>
+
+        <strong class="summary-value">
+          {{ inProgressTasks }}
+        </strong>
+      </div>
+    </article>
+
+    <!-- PENDING ACCEPTANCE -->
+
+    <article class="summary-card">
+      <div class="summary-icon">!</div>
+
+      <div>
+        <span class="summary-label"> Pending Acceptance </span>
+
+        <strong class="summary-value">
+          {{ pendingAcceptanceTasks }}
+        </strong>
+      </div>
+    </article>
+
+    <!-- COMPLETED -->
+
+    <article class="summary-card">
+      <div class="summary-icon">✓</div>
+
+      <div>
+        <span class="summary-label"> Completed </span>
+
+        <strong class="summary-value">
+          {{ completedTasks }}
+        </strong>
+      </div>
+    </article>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- ALL TASKS                                                  -->
+  <!-- ========================================================= -->
+
+  <section class="tasks-card">
+    <!-- CARD HEADER -->
+
+    <div class="card-header">
+      <div>
+        <h2>All Tasks</h2>
+
+        <p>Manage your team's assigned tasks.</p>
+      </div>
+
+      <div class="task-actions">
+        <button type="button" class="filter-button">All Tasks</button>
+      </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- TASK LIST                                                -->
+    <!-- ======================================================= -->
+
+    @if (tasks.length > 0) {
+      <div class="task-table-wrapper">
+        <table class="task-table">
+          <!-- TABLE HEADER -->
+
+          <thead>
+            <tr>
+              <th>Task</th>
+
+              <th>Assignee</th>
+
+              <th>Priority</th>
+
+              <th>Status</th>
+
+              <th>Due Date</th>
+
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <!-- TABLE BODY -->
+
+          <tbody>
+            @for (task of tasks; track task.id) {
+              <tr>
+                <!-- TASK -->
+
+                <td>
+                  <div class="task-title-cell">
+                    <strong>
+                      {{ task.title }}
+                    </strong>
+
+                    <span>
+                      {{ task.description }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- ASSIGNEE -->
+
+                <td>
+                  <div class="assignee-cell">
+                    <span class="assignee-avatar">
+                      {{ getEmployeeName(task.assignedEmployeeId).charAt(0) }}
+                    </span>
+
+                    <span>
+                      {{ getEmployeeName(task.assignedEmployeeId) }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- PRIORITY -->
+
+                <td>
+                  <span
+                    class="priority-badge"
+                    [class.priority-low]="task.priority === 'Low'"
+                    [class.priority-medium]="task.priority === 'Medium'"
+                    [class.priority-high]="task.priority === 'High'"
+                    [class.priority-critical]="task.priority === 'Critical'"
+                  >
+                    {{ task.priority }}
+                  </span>
+                </td>
+
+                <!-- STATUS -->
+
+                <td>
+                  <span
+                    class="status-badge"
+                    [class.status-pending]="task.status === 'Pending Acceptance'"
+                    [class.status-accepted]="task.status === 'Accepted'"
+                    [class.status-progress]="task.status === 'In Progress'"
+                    [class.status-review]="task.status === 'Under Review'"
+                    [class.status-completed]="task.status === 'Completed'"
+                    [class.status-declined]="task.status === 'Declined'"
+                    [class.status-cancelled]="task.status === 'Cancelled'"
+                  >
+                    {{ task.status }}
+                  </span>
+                </td>
+
+                <!-- DUE DATE -->
+
+                <td>
+                  <span class="due-date">
+                    {{ task.dueDate | date: 'dd MMM yyyy' }}
+                  </span>
+                </td>
+
+                <!-- ACTIONS -->
+
+                <td>
+                  <div class="row-actions">
+                    <!-- VIEW -->
+
+                    <button type="button" class="row-action-button" (click)="viewTask(task.id)">
+                      View
+                    </button>
+
+                    <!-- EDIT -->
+
+                    <button type="button" class="row-action-button" (click)="editTask(task.id)">
+                      Edit
+                    </button>
+
+                    <!-- DELETE -->
+
+                    <button
+                      type="button"
+                      class="row-action-button row-action-danger"
+                      (click)="deleteTask(task.id)"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <!-- ======================================================= -->
+    <!-- EMPTY STATE                                              -->
+    <!-- ======================================================= -->
+
+    @else {
+      <div class="empty-state">
+        <div class="empty-icon">✓</div>
+
+        <h3>No tasks available</h3>
+
+        <p>Create your first task and assign it to a team member.</p>
+
+        <button type="button" class="empty-action" (click)="openAssignmentForm()">
+          + Assign Task
+        </button>
+      </div>
+    }
+  </section>
+</section>
