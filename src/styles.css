@@ -60,12 +60,15 @@ body {
 
    /* BUTTON RESET */
 
-button,
+
+
+/* button,
 input,
 textarea,
 select {
   font: inherit;
-}
+} */
+
 
 
    /* LINKS */

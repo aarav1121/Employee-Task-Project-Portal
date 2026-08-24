@@ -1,5 +1,7 @@
 <section class="tasks-page">
-  <!-- PAGE HEADER -->
+  <!-- ========================================================= -->
+  <!-- PAGE HEADER                                                -->
+  <!-- ========================================================= -->
 
   <header class="tasks-header">
     <div class="tasks-heading">
@@ -10,7 +12,7 @@
       <p>Create, assign, monitor, and manage tasks across your team.</p>
     </div>
 
-    <!-- ASSIGN TASK BUTTON -->
+    <!-- ASSIGN TASK -->
 
     <button type="button" class="assign-button" (click)="openAssignmentForm()">
       <span>+</span>
@@ -18,12 +20,12 @@
     </button>
   </header>
 
-  <!-- TASK ASSIGNMENT MODAL -->
+  <!-- ========================================================= -->
+  <!-- ASSIGN TASK MODAL                                          -->
+  <!-- ========================================================= -->
 
   @if (showAssignmentForm) {
     <div class="assignment-overlay">
-      <!-- MODAL / FLOATING PANEL -->
-
       <section
         class="assignment-card"
         role="dialog"
@@ -49,7 +51,7 @@
             }
           </div>
 
-          <!-- CLOSE BUTTON -->
+          <!-- CLOSE -->
 
           <button
             type="button"
@@ -61,11 +63,11 @@
           </button>
         </div>
 
-        <!-- ASSIGNMENT FORM -->
+        <!-- ===================================================== -->
+        <!-- ASSIGNMENT FORM                                       -->
+        <!-- ===================================================== -->
 
         <form [formGroup]="assignmentForm" (ngSubmit)="createTask()" class="assignment-form">
-
-
           <!-- TASK TITLE -->
 
           <div class="form-group">
@@ -110,7 +112,9 @@
             }
           </div>
 
-          <!-- EMPLOYEE + PRIORITY -->
+          <!-- =================================================== -->
+          <!-- EMPLOYEE + PRIORITY                                  -->
+          <!-- =================================================== -->
 
           <div class="form-row">
             <!-- ASSIGN EMPLOYEE -->
@@ -154,7 +158,9 @@
             </div>
           </div>
 
+          <!-- =================================================== -->
           <!-- DATES                                                -->
+          <!-- =================================================== -->
 
           <div class="form-row">
             <!-- DUE DATE -->
@@ -192,7 +198,9 @@
             </div>
           </div>
 
-          <!-- FORM INFORMATION                                 -->
+          <!-- =================================================== -->
+          <!-- FORM INFORMATION                                     -->
+          <!-- =================================================== -->
 
           <div class="form-info">
             <span class="form-info-icon"> i </span>
@@ -203,7 +211,9 @@
             </p>
           </div>
 
+          <!-- =================================================== -->
           <!-- FORM ACTIONS                                         -->
+          <!-- =================================================== -->
 
           <div class="form-actions">
             <!-- CANCEL -->
@@ -230,19 +240,26 @@
   }
 
   <!-- ========================================================= -->
-  <!-- TASK DETAILS                                              -->
+  <!-- TASK DETAILS MODAL                                        -->
   <!-- ========================================================= -->
 
   @if (showTaskDetails && selectedTask) {
     <div class="task-details-overlay">
-      <section class="task-details-card">
-        <!-- DETAILS HEADER -->
+      <section
+        class="task-details-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="task-details-title"
+      >
+        <!-- =================================================== -->
+        <!-- DETAILS HEADER                                      -->
+        <!-- =================================================== -->
 
         <div class="task-details-header">
           <div>
             <span class="tasks-eyebrow"> TASK DETAILS </span>
 
-            <h2>
+            <h2 id="task-details-title">
               {{ selectedTask.title }}
             </h2>
 
@@ -261,7 +278,9 @@
           </button>
         </div>
 
-        <!-- DETAILS BODY -->
+        <!-- =================================================== -->
+        <!-- DETAILS BODY                                         -->
+        <!-- =================================================== -->
 
         <div class="task-details-body">
           <!-- DESCRIPTION -->
@@ -274,7 +293,9 @@
             </p>
           </div>
 
-          <!-- INFORMATION GRID -->
+          <!-- ================================================= -->
+          <!-- INFORMATION GRID                                  -->
+          <!-- ================================================= -->
 
           <div class="task-details-grid">
             <!-- ASSIGNEE -->
@@ -363,16 +384,19 @@
             </div>
           </div>
 
-          <!-- ===================================================== -->
-          <!-- SUBTASKS                                               -->
-          <!-- ===================================================== -->
+          <!-- ================================================= -->
+          <!-- SUBTASKS                                           -->
+          <!-- ================================================= -->
 
           <div class="task-detail-section">
             <div class="section-heading">
               <div>
                 <span class="detail-label"> Subtasks </span>
 
-                <p>{{ selectedTask.subtasks.length }} subtasks</p>
+                <p>
+                  {{ selectedTask.subtasks.length }}
+                  subtasks
+                </p>
               </div>
             </div>
 
@@ -395,7 +419,9 @@
             }
           </div>
 
-          <!-- ACTIVITY                                               -->
+          <!-- ================================================= -->
+          <!-- ACTIVITY                                           -->
+          <!-- ================================================= -->
 
           <div class="task-detail-section">
             <div class="section-heading">
@@ -419,7 +445,9 @@
 
                       <span>
                         {{ activity.performedBy }}
+
                         ·
+
                         {{ activity.timestamp | date: 'dd MMM yyyy, hh:mm a' }}
                       </span>
                     </div>
@@ -432,7 +460,9 @@
           </div>
         </div>
 
-        <!-- DETAILS FOOTER -->
+        <!-- =================================================== -->
+        <!-- DETAILS FOOTER                                      -->
+        <!-- =================================================== -->
 
         <div class="task-details-footer">
           <button type="button" class="cancel-button" (click)="closeTaskDetails()">Close</button>
@@ -442,12 +472,10 @@
   }
 
   <!-- ========================================================= -->
-  <!-- TASK SUMMARY                                               -->
+  <!-- TASK SUMMARY                                              -->
   <!-- ========================================================= -->
 
   <section class="task-summary-grid">
-    <!-- TOTAL TASKS -->
-
     <article class="summary-card">
       <div class="summary-icon">✓</div>
 
@@ -459,8 +487,6 @@
         </strong>
       </div>
     </article>
-
-    <!-- IN PROGRESS -->
 
     <article class="summary-card">
       <div class="summary-icon">◷</div>
@@ -474,8 +500,6 @@
       </div>
     </article>
 
-    <!-- PENDING ACCEPTANCE -->
-
     <article class="summary-card">
       <div class="summary-icon">!</div>
 
@@ -487,8 +511,6 @@
         </strong>
       </div>
     </article>
-
-    <!-- COMPLETED -->
 
     <article class="summary-card">
       <div class="summary-icon">✓</div>
@@ -508,8 +530,6 @@
   <!-- ========================================================= -->
 
   <section class="tasks-card">
-    <!-- CARD HEADER -->
-
     <div class="card-header">
       <div>
         <h2>All Tasks</h2>
@@ -517,43 +537,163 @@
         <p>Manage your team's assigned tasks.</p>
       </div>
 
-      <div class="task-actions">
-        <button type="button" class="filter-button">All Tasks</button>
+      <div class="task-result-count">
+        Showing
+
+        <strong>
+          {{ filteredTasks.length }}
+        </strong>
+
+        of 
+
+        <strong>
+          {{ tasks.length }}
+        </strong>
+
+        tasks
       </div>
     </div>
 
+
+<!-- ======================================================= -->
+<!-- FILTER BAR                                              -->
+<!-- ======================================================= -->
+
+<div class="task-filter-bar">
+
+  <!-- SEARCH -->
+
+  <div class="search-field">
+
+    <span class="search-icon" aria-hidden="true">
+      ⌕
+    </span>
+
+    <input
+      type="search"
+      placeholder="Search tasks, descriptions, or employees..."
+      aria-label="Search tasks"
+      [value]="searchTerm"
+      (input)="onSearchChange($event)"
+    />
+
+  </div>
+
+
+  <!-- STATUS -->
+
+  <div class="filter-field">
+
+    <label for="status-filter">
+      Status
+    </label>
+
+    <select
+      id="status-filter"
+      [value]="selectedStatus"
+      (change)="onStatusChange($event)"
+    >
+
+      <option value="All">
+        All Statuses
+      </option>
+
+      @for (status of statuses; track status) {
+
+        <option [value]="status">
+          {{ status }}
+        </option>
+
+      }
+
+    </select>
+
+  </div>
+
+
+  <!-- PRIORITY -->
+
+  <div class="filter-field">
+
+    <label for="priority-filter">
+      Priority
+    </label>
+
+    <select
+      id="priority-filter"
+      [value]="selectedPriority"
+      (change)="onPriorityChange($event)"
+    >
+
+      <option value="All">
+        All Priorities
+      </option>
+
+      @for (priority of priorities; track priority) {
+
+        <option [value]="priority">
+          {{ priority }}
+        </option>
+
+      }
+
+    </select>
+
+  </div>
+
+
+  <!-- EMPLOYEE -->
+
+  <div class="filter-field">
+
+    <label for="employee-filter">
+      Assignee
+    </label>
+
+    <select
+      id="employee-filter"
+      [value]="selectedEmployee"
+      (change)="onEmployeeChange($event)"
+    >
+
+      <option value="All">
+        All Employees
+      </option>
+
+      @for (employee of employees; track employee.id) {
+
+        <option [value]="employee.id">
+          {{ employee.name }}
+        </option>
+
+      }
+
+    </select>
+
+  </div>
+
+</div>
     <!-- ======================================================= -->
-    <!-- TASK LIST                                                -->
+    <!-- TASK TABLE                                               -->
     <!-- ======================================================= -->
 
-    @if (tasks.length > 0) {
+    @if (filteredTasks.length > 0) {
       <div class="task-table-wrapper">
         <table class="task-table">
-          <!-- TABLE HEADER -->
-
           <thead>
             <tr>
               <th>Task</th>
-
               <th>Assignee</th>
-
               <th>Priority</th>
-
               <th>Status</th>
-
               <th>Due Date</th>
-
               <th>Actions</th>
             </tr>
           </thead>
 
-          <!-- TABLE BODY -->
-
           <tbody>
-            @for (task of tasks; track task.id) {
+            @for (task of filteredTasks; track task.id) {
               <tr>
-                <!-- TASK -->
-
                 <td>
                   <div class="task-title-cell">
                     <strong>
@@ -565,8 +705,6 @@
                     </span>
                   </div>
                 </td>
-
-                <!-- ASSIGNEE -->
 
                 <td>
                   <div class="assignee-cell">
@@ -580,8 +718,6 @@
                   </div>
                 </td>
 
-                <!-- PRIORITY -->
-
                 <td>
                   <span
                     class="priority-badge"
@@ -593,8 +729,6 @@
                     {{ task.priority }}
                   </span>
                 </td>
-
-                <!-- STATUS -->
 
                 <td>
                   <span
@@ -611,31 +745,21 @@
                   </span>
                 </td>
 
-                <!-- DUE DATE -->
-
                 <td>
                   <span class="due-date">
                     {{ task.dueDate | date: 'dd MMM yyyy' }}
                   </span>
                 </td>
 
-                <!-- ACTIONS -->
-
                 <td>
                   <div class="row-actions">
-                    <!-- VIEW -->
-
                     <button type="button" class="row-action-button" (click)="viewTask(task.id)">
                       View
                     </button>
 
-                    <!-- EDIT -->
-
                     <button type="button" class="row-action-button" (click)="editTask(task.id)">
                       Edit
                     </button>
-
-                    <!-- DELETE -->
 
                     <button
                       type="button"
@@ -651,24 +775,69 @@
           </tbody>
         </table>
       </div>
+
+
     }
+    
+    @else if (hasActiveFilters) {
 
-    <!-- ======================================================= -->
-    <!-- EMPTY STATE                                              -->
-    <!-- ======================================================= -->
+  <!-- ===================================================== -->
+  <!-- NO FILTER RESULTS                                     -->
+  <!-- ===================================================== -->
 
-    @else {
-      <div class="empty-state">
-        <div class="empty-icon">✓</div>
+  <div class="empty-state">
 
-        <h3>No tasks available</h3>
+    <div class="empty-icon">
+      ⌕
+    </div>
 
-        <p>Create your first task and assign it to a team member.</p>
+    <h3>
+      No matching tasks
+    </h3>
 
-        <button type="button" class="empty-action" (click)="openAssignmentForm()">
-          + Assign Task
-        </button>
-      </div>
-    }
-  </section>
-</section>
+    <p>
+      No tasks match your current search or filter selection.
+      Try changing the filters or clearing them.
+    </p>
+
+    <button
+      type="button"
+      class="clear-filter-button"
+      (click)="clearFilters()"
+    >
+      Clear Filters
+    </button>
+
+  </div>
+
+} @else {
+
+  <!-- ===================================================== -->
+  <!-- NO TASKS AT ALL                                       -->
+  <!-- ===================================================== -->
+
+  <div class="empty-state">
+
+    <div class="empty-icon">
+      ✓
+    </div>
+
+    <h3>
+      No tasks available
+    </h3>
+
+    <p>
+      Create your first task and assign it to a team member.
+    </p>
+
+    <button
+      type="button"
+      class="empty-action"
+      (click)="openAssignmentForm()"
+    >
+      + Assign Task
+    </button>
+
+  </div>
+
+}
