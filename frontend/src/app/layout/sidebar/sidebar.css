@@ -1,0 +1,39 @@
+
+:host {
+  display: flex;
+  height: 100%;
+}
+
+.sidebar {
+  width: 100%;
+  min-height: 100vh;
+  padding: 24px 16px;
+  background: #091c69;
+  border-right: 1px solid var(--border-color);
+  flex: 1;
+}
+
+.sidebar h2 {
+  margin: 0 0 30px;
+  color: white;
+  font-size: 25px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar a {
+  padding: 11px 12px;
+  border-radius: var(--radius-md);
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.sidebar a:hover {
+  background: var(--accent-soft);
+  color: var(--accent-color);
+}

@@ -1,0 +1,432 @@
+<div class="userlist-page">
+
+  <!-- HEADER -->
+
+  <header class="userlist-header">
+
+    <div>
+
+      <h2>Employees</h2>
+
+      <p>
+        Manage employees in the system.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="add-user"
+      (click)="openUserForm()"
+    >
+
+      <span>+</span>
+
+      Add User
+
+    </button>
+
+  </header>
+
+  <!-- ADD USER MODAL -->
+
+  @if (showUserForm) {
+
+    <div
+      class="modal-overlay"
+      (click)="closeUserForm()"
+    >
+
+      <div
+        class="modal-card"
+        (click)="$event.stopPropagation()"
+      >
+
+        <!-- MODAL HEADER -->
+
+        <div class="modal-header">
+
+          <div>
+
+            <h3>
+              Add New User
+            </h3>
+
+            <p>
+              Enter the employee information below.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="closeUserForm()"
+            aria-label="Close"
+          >
+
+            ×
+
+          </button>
+
+        </div>
+
+        <!-- USER FORM -->
+
+        <form
+          [formGroup]="userForm"
+          (ngSubmit)="createUser()"
+        >
+
+          <!-- NAME -->
+
+          <div class="form-group">
+
+            <label for="name">
+              Name
+            </label>
+
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              placeholder="Enter name"
+            />
+
+            @if (
+              userForm.controls.name.touched &&
+              userForm.controls.name.invalid
+            ) {
+
+              <small class="error-message">
+                Name is required.
+              </small>
+
+            }
+
+          </div>
+
+          <!-- EMAIL -->
+
+          <div class="form-group">
+
+            <label for="email">
+              Email
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="Enter email"
+              autocomplete="email"
+            />
+
+            @if (
+              userForm.controls.email.touched &&
+              userForm.controls.email.invalid
+            ) {
+
+              <small class="error-message">
+
+                @if (
+                  userForm.controls.email.errors?.['required']
+                ) {
+
+                  Email is required.
+
+                }
+                @else {
+
+                  Enter a valid email address.
+
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+          <!-- DEPARTMENT -->
+
+          <div class="form-group">
+
+            <label for="department">
+              Department
+            </label>
+
+            <input
+              id="department"
+              type="text"
+              formControlName="department"
+              placeholder="Enter department"
+            />
+
+            @if (
+              userForm.controls.department.touched &&
+              userForm.controls.department.invalid
+            ) {
+
+              <small class="error-message">
+                Department is required.
+              </small>
+
+            }
+
+          </div>
+
+          <!-- PASSWORD -->
+
+          <div class="form-group">
+
+            <label for="password">
+              Password
+            </label>
+
+            <div class="password-wrapper">
+
+              <input
+                id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="Enter password"
+                autocomplete="new-password"
+              />
+
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="togglePassword()"
+              >
+
+                {{ showPassword ? 'Hide' : 'Show' }}
+
+              </button>
+
+            </div>
+
+            @if (
+              userForm.controls.password.touched &&
+              userForm.controls.password.invalid
+            ) {
+
+              <small class="error-message">
+
+                @if (
+                  userForm.controls.password.errors?.['required']
+                ) {
+
+                  Password is required.
+
+                }
+                @else if (
+                  userForm.controls.password.errors?.['minlength']
+                ) {
+
+                  Password must be at least 8 characters.
+
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+          <!-- FORM ACTIONS -->
+
+          <div class="form-actions">
+
+            <button
+              type="button"
+              class="cancel-button"
+              (click)="closeUserForm()"
+            >
+
+              Cancel
+
+            </button>
+
+            <button
+              type="submit"
+              class="save-button"
+              [disabled]="userForm.invalid"
+            >
+
+              Save User
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  }
+
+  <!-- USERS TABLE -->
+
+  <div class="user-table-container">
+
+    <div class="table-wrapper">
+
+      <table class="user-table">
+
+        <!-- TABLE HEADER -->
+
+        <thead>
+
+          <tr>
+
+            <th>
+              ID
+            </th>
+
+            <th>
+              Name
+            </th>
+
+            <th>
+              Email
+            </th>
+
+            <th>
+              Department
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <!-- TABLE BODY -->
+
+        <tbody>
+
+          @for (
+            user of users;
+            track user.id
+          ) {
+
+            <tr>
+
+              <td>
+                {{ user.id }}
+              </td>
+
+              <td class="employee-name">
+                {{ user.name }}
+              </td>
+
+              <td>
+                {{ user.email }}
+              </td>
+
+              <td>
+
+                <span class="department">
+                  {{ user.department }}
+                </span>
+
+              </td>
+
+            </tr>
+
+          }
+
+          <!-- EMPTY STATE -->
+
+          @if (users.length === 0) {
+
+            <tr>
+
+              <td
+                colspan="4"
+                class="empty-state"
+              >
+
+                No users found.
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <!-- PAGINATION -->
+
+    @if (totalUsers > 0) {
+
+      <div class="pagination">
+
+        <!-- PAGINATION INFORMATION -->
+
+        <div class="pagination-info">
+
+          Showing
+          {{ (currentPage - 1) * pageSize + 1 }}
+          -
+          {{
+            currentPage * pageSize > totalUsers
+              ? totalUsers
+              : currentPage * pageSize
+          }}
+          of
+          {{ totalUsers }}
+          users
+
+        </div>
+
+        <!-- PAGINATION CONTROL -->
+
+        <div class="pagination-controls">
+
+          <button
+            type="button"
+            class="pagination-button"
+            (click)="previousPage()"
+            [disabled]="currentPage === 1"
+          >
+
+            Previous
+
+          </button>
+
+          <span class="page-number">
+
+            Page
+            {{ currentPage }}
+            of
+            {{ totalPages }}
+
+          </span>
+
+          <button
+            type="button"
+            class="pagination-button"
+            (click)="nextPage()"
+            [disabled]="currentPage === totalPages"
+          >
+
+            Next
+
+          </button>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

@@ -1,0 +1,147 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <div class="login-header">
+
+      <div class="login-logo">
+        ET
+      </div>
+
+      <h1>Welcome Back</h1>
+
+      <p>
+        Sign in to your Employee Task Portal
+      </p>
+
+    </div>
+
+    <!-- EMAIL AND PASSWORD LOGIN -->
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="login()"
+      class="login-form"
+    >
+
+      <!-- EMAIL -->
+
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email"
+          autocomplete="email"
+        >
+
+        @if (
+          loginForm.controls.email.touched &&
+          loginForm.controls.email.hasError('required')
+        ) {
+          <span class="error-text">
+            Email is required
+          </span>
+        }
+
+        @if (
+          loginForm.controls.email.touched &&
+          loginForm.controls.email.hasError('email')
+        ) {
+          <span class="error-text">
+            Enter a valid email address
+          </span>
+        }
+
+      </div>
+
+      <!-- PASSWORD -->
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <div class="password-wrapper">
+
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+          >
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePassword()"
+          >
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+
+        </div>
+
+        @if (
+          loginForm.controls.password.touched &&
+          loginForm.controls.password.hasError('required')
+        ) {
+          <span class="error-text">
+            Password is required
+          </span>
+        }
+
+      </div>
+
+      <!-- LOGIN ERROR -->
+
+      @if (loginError) {
+        <div class="login-error">
+          {{ loginError }}
+        </div>
+      }
+
+      <!-- LOGIN BUTTON -->
+
+      <button
+        type="submit"
+        class="login-button"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+
+    </form>
+
+    <!-- GOOGLE LOGIN -->
+
+    <div class="login-divider">
+      <span>OR</span>
+    </div>
+
+    <div class="google-login">
+
+      <div
+        #googleButton
+        class="google-button"
+      ></div>
+
+    </div>
+
+    <div class="login-footer">
+
+      <p>
+        Employee Task & Project Assignment Portal
+      </p>
+
+    </div>
+
+  </div>
+
+</div>

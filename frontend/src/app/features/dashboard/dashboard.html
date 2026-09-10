@@ -1,0 +1,355 @@
+<div class="dashboard">
+  <!-- WELCOME HEADER -->
+
+  <section class="dashboard-header">
+    <div>
+      <span class="dashboard-eyebrow"> TEAM OVERVIEW </span>
+
+      <h1>Good morning, Team Lead</h1>
+
+      <p>Monitor your team's tasks, workload, and delivery performance.</p>
+    </div>
+
+    <!-- <button type="button" class="assign-button" (click)="openAssignmentForm()">
+      <span> + </span>
+
+      Assign Task
+    </button> -->
+  </section>
+
+  <!-- =========================================
+       KPI CARDS
+  ========================================== -->
+
+  <section class="kpi-grid">
+    <!-- Total Assigned Tasks -->
+
+    <article class="kpi-card">
+      <div class="kpi-top">
+        <span class="kpi-label"> Total Assigned Tasks </span>
+
+        <span class="kpi-icon"> ✓ </span>
+      </div>
+
+      <div class="kpi-value">
+        {{ totalAssignedTasks }}
+      </div>
+
+      <div class="kpi-footer">All tasks assigned to the team</div>
+    </article>
+
+    <!-- Acceptance Rate -->
+
+    <article class="kpi-card">
+      <div class="kpi-top">
+        <span class="kpi-label"> Acceptance Rate </span>
+
+        <span class="kpi-icon"> % </span>
+      </div>
+
+      <div class="kpi-value">{{ acceptanceRate }}%</div>
+
+      <div class="kpi-footer positive">
+        <span> ↑ </span>
+
+        <span> Task acceptance performance </span>
+      </div>
+    </article>
+
+    <!-- On-Time Completion -->
+
+    <article class="kpi-card">
+      <div class="kpi-top">
+        <span class="kpi-label"> On-Time Completion </span>
+
+        <span class="kpi-icon"> ⏱ </span>
+      </div>
+
+      <div class="kpi-value">{{ onTimeCompletion }}%</div>
+
+      <div class="kpi-footer">Completed tasks delivered on time</div>
+    </article>
+
+    <!-- Team Capacity -->
+
+    <article class="kpi-card">
+      <div class="kpi-top">
+        <span class="kpi-label"> Team Capacity </span>
+
+        <span class="kpi-icon"> ◉ </span>
+      </div>
+
+      <div class="kpi-value">{{ teamCapacity }}%</div>
+
+      <div class="capacity-bar">
+        <div class="capacity-progress" [style.width.%]="teamCapacity"></div>
+      </div>
+
+      <div class="kpi-footer">Current active workload</div>
+    </article>
+  </section>
+
+  <!-- =========================================
+       TEAM CAPACITY
+  ========================================== -->
+
+  <section class="dashboard-card capacity-card">
+    <div class="card-header">
+      <div>
+        <h2>Team Capacity</h2>
+
+        <p>Current workload across your team</p>
+      </div>
+
+      <button class="card-action">View Team</button>
+    </div>
+
+    <!-- Capacity Summary -->
+
+    <div class="capacity-summary">
+      <div class="capacity-number">{{ teamCapacity }}%</div>
+
+      <div class="capacity-description">
+        <strong> Healthy utilization </strong>
+
+        <span> {{ remainingCapacity }} task capacity remaining </span>
+      </div>
+    </div>
+
+    <!-- Capacity Progress -->
+
+    <div class="capacity-bar">
+      <div class="capacity-progress" [style.width.%]="teamCapacity"></div>
+    </div>
+
+    <!-- Capacity Meta -->
+
+    <div class="capacity-meta">
+      <span> {{ activeTasksCount }} active tasks </span>
+
+      <span> {{ activeTasksCount + remainingCapacity }} task capacity </span>
+    </div>
+  </section>
+
+  <!-- =========================================
+       ANALYTICS GRID
+  ========================================== -->
+
+  <section class="dashboard-grid">
+    <!-- =========================================
+         TASK DISTRIBUTION
+    ========================================== -->
+
+    <article class="dashboard-card">
+      <div class="card-header">
+        <div>
+          <h2>Task Distribution</h2>
+
+          <p>Tasks by current status</p>
+        </div>
+
+        <button class="card-action">View Tasks</button>
+      </div>
+
+      <div class="chart-placeholder">
+        <!-- Temporary visual placeholder -->
+
+        <div class="chart-circle">
+          <span>
+            {{ totalAssignedTasks }}
+          </span>
+
+          <small> Total Tasks </small>
+        </div>
+
+        <!-- Task Distribution Legend -->
+
+        <div class="chart-legend">
+          <!-- Pending Acceptance -->
+
+          <div class="legend-item">
+            <span class="legend-dot pending"></span>
+
+            <span> Pending Acceptance </span>
+
+            <strong>
+              {{ pendingAcceptanceTasks }}
+            </strong>
+          </div>
+
+          <!-- Accepted -->
+
+          <div class="legend-item">
+            <span class="legend-dot accepted"></span>
+
+            <span> Accepted </span>
+
+            <strong>
+              {{ acceptedTasks }}
+            </strong>
+          </div>
+
+          <!-- In Progress -->
+
+          <div class="legend-item">
+            <span class="legend-dot progress"></span>
+
+            <span> In Progress </span>
+
+            <strong>
+              {{ inProgressTasks }}
+            </strong>
+          </div>
+
+          <!-- Under Review -->
+
+          <div class="legend-item">
+            <span class="legend-dot review"></span>
+
+            <span> Under Review </span>
+
+            <strong>
+              {{ underReviewTasks }}
+            </strong>
+          </div>
+
+          <!-- Completed -->
+
+          <div class="legend-item">
+            <span class="legend-dot completed"></span>
+
+            <span> Completed </span>
+
+            <strong>
+              {{ completedTasks }}
+            </strong>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- =========================================
+         PRIORITY OVERVIEW
+    ========================================== -->
+
+    <article class="dashboard-card">
+      <div class="card-header">
+        <div>
+          <h2>Priority Overview</h2>
+
+          <p>Tasks grouped by priority</p>
+        </div>
+
+        <button class="card-action">Details</button>
+      </div>
+
+      <div class="priority-list">
+        <!-- Critical -->
+
+        <div class="priority-row">
+          <div class="priority-info">
+            <span class="priority-dot critical"></span>
+
+            <span> Critical </span>
+
+            <strong>
+              {{ criticalTasks }}
+            </strong>
+          </div>
+
+          <div class="priority-track">
+            <div class="priority-fill critical-fill" [style.width.%]="criticalPercentage"></div>
+          </div>
+        </div>
+
+        <!-- High -->
+
+        <div class="priority-row">
+          <div class="priority-info">
+            <span class="priority-dot high"></span>
+
+            <span> High </span>
+
+            <strong>
+              {{ highTasks }}
+            </strong>
+          </div>
+
+          <div class="priority-track">
+            <div class="priority-fill high-fill" [style.width.%]="highPercentage"></div>
+          </div>
+        </div>
+
+        <!-- Medium -->
+
+        <div class="priority-row">
+          <div class="priority-info">
+            <span class="priority-dot medium"></span>
+
+            <span> Medium </span>
+
+            <strong>
+              {{ mediumTasks }}
+            </strong>
+          </div>
+
+          <div class="priority-track">
+            <div class="priority-fill medium-fill" [style.width.%]="mediumPercentage"></div>
+          </div>
+        </div>
+
+        <!-- Low -->
+
+        <div class="priority-row">
+          <div class="priority-info">
+            <span class="priority-dot low"></span>
+
+            <span> Low </span>
+
+            <strong>
+              {{ lowTasks }}
+            </strong>
+          </div>
+
+          <div class="priority-track">
+            <div class="priority-fill low-fill" [style.width.%]="lowPercentage"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- =========================================
+       RECENT ACTIVITY
+  ========================================== -->
+
+  <section class="dashboard-card activity-card">
+    <div class="card-header">
+      <div>
+        <h2>Recent Activity</h2>
+
+        <p>Latest updates from your team</p>
+      </div>
+
+      <button class="card-action">View All</button>
+    </div>
+
+    <div class="activity-list">
+      @for (activity of recentActivities; track activity.id) {
+        <div class="activity-item">
+          <span class="activity-indicator"></span>
+
+          <div class="activity-content">
+            <strong>{{ activity.title }}</strong>
+
+            <p>{{ activity.description }}</p>
+          </div>
+
+          <span class="activity-time">
+            {{ activity.createdAt | date: 'short' }}
+          </span>
+        </div>
+      }
+    </div>
+  </section>
+</div>
