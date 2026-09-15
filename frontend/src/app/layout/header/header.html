@@ -1,21 +1,109 @@
-<div class="header">
+<header class="header">
 
-  <div>
+  <div class="header-left">
+
     <span class="page-title">
       Employee Task & Project Portal
     </span>
+
   </div>
 
   <div class="header-right">
 
-    <span class="role">
-      Team Lead
-    </span>
+    <div class="user-menu">
 
-    <div class="avatar">
-      A
+      <button
+        type="button"
+        class="user-profile"
+        (click)="toggleUserMenu()"
+        aria-label="Open user menu"
+      >
+
+        <div class="avatar">
+          {{ userInitial }}
+        </div>
+
+        <div class="user-details">
+
+          <span class="user-name">
+            {{ userName }}
+          </span>
+
+          <span class="user-role">
+            {{ userRole }}
+          </span>
+
+        </div>
+
+        <span
+          class="user-arrow"
+          [class.open]="showUserMenu"
+        >
+          ▼
+        </span>
+
+      </button>
+
+      @if (showUserMenu) {
+
+        <div class="user-dropdown">
+
+          <button
+            type="button"
+            class="dropdown-item"
+            (click)="openProfile()"
+          >
+
+            <span class="dropdown-icon">
+              👤
+            </span>
+
+            <span>
+              Profile
+            </span>
+
+          </button>
+
+          <a
+            routerLink="/settings"
+            class="dropdown-item"
+            (click)="closeUserMenu()"
+          >
+
+            <span class="dropdown-icon">
+              ⚙
+            </span>
+
+            <span>
+              Settings
+            </span>
+
+          </a>
+
+          <div class="dropdown-divider"></div>
+
+          <button
+            type="button"
+            class="dropdown-item logout-item"
+            (click)="logout()"
+          >
+
+            <span class="dropdown-icon">
+              ↪
+            </span>
+
+            <span>
+              Logout
+            </span>
+
+          </button>
+
+        </div>
+
+      }
+
     </div>
 
   </div>
 
-</div>
+</header>

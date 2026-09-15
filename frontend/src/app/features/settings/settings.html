@@ -1,0 +1,193 @@
+<div class="settings-page">
+
+  <!-- HEADER -->
+
+  <header class="settings-header">
+    <div>
+      <h2>Settings</h2>
+
+      <p>Manage your application preferences.</p>
+    </div>
+  </header>
+
+  <!-- GENERAL -->
+
+  <section class="settings-section">
+
+    <div class="section-header">
+
+      <div>
+        <h3>General</h3>
+
+        <p>Basic application and regional preferences.</p>
+      </div>
+
+    </div>
+
+    <div class="settings-card">
+
+      <div class="setting-row">
+        <div class="setting-content">
+          <h4>Application Name</h4>
+
+          <p>Employee Task & Project Portal</p>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-content">
+          <h4>Language</h4>
+
+          <p>English</p>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-content">
+          <h4>Timezone</h4>
+
+          <p>Asia/Kolkata</p>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-content">
+          <h4>Date Format</h4>
+
+          <p>DD/MM/YYYY</p>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- NOTIFICATIONS -->
+
+  <section class="settings-section">
+
+    <div class="section-header">
+
+      <div>
+        <h3>Notifications</h3>
+
+        <p>Notification preferences for task activities.</p>
+      </div>
+
+    </div>
+
+    <div class="settings-card">
+
+      <div class="setting-row">
+
+        <div class="setting-content">
+          <h4>Task Assigned</h4>
+
+          <p>Receive notifications when a task is assigned.</p>
+        </div>
+
+        <span class="notification-status">
+          Enabled
+        </span>
+
+      </div>
+
+      <div class="setting-row">
+
+        <div class="setting-content">
+          <h4>Task Accepted</h4>
+
+          <p>Receive notifications when an employee accepts a task.</p>
+        </div>
+
+        <span class="notification-status">
+          Enabled
+        </span>
+
+      </div>
+
+      <div class="setting-row">
+
+        <div class="setting-content">
+          <h4>Task Deadline Reminder</h4>
+
+          <p>Receive reminders about approaching task deadlines.</p>
+        </div>
+
+        <span class="notification-status">
+          Enabled
+        </span>
+
+      </div>
+
+      <div class="setting-row">
+
+        <div class="setting-content">
+          <h4>Task Completed</h4>
+
+          <p>Receive notifications when a task is completed.</p>
+        </div>
+
+        <span class="notification-status">
+          Enabled
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- LOGOUT -->
+
+  <div class="logout-section">
+
+    <button
+    type="button"
+    class="logout-button"
+    (click)="logout()"
+>
+
+      <svg
+        class="logout-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+
+        <path
+          d="M10 4H6.5C5.67 4 5 4.67 5 5.5V18.5C5 19.33 5.67 20 6.5 20H10"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+
+        <path
+          d="M13 8L17 12L13 16"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+
+        <path
+          d="M17 12H9"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+
+      </svg>
+
+      <span>
+        Logout
+      </span>
+
+    </button>
+
+  </div>
+
+</div>

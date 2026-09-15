@@ -27,6 +27,19 @@ declare global {
   }
 }
 
+interface LoginResponse {
+  message: string;
+  accessToken: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    department: string;
+    role: string;
+    authProvider: string;
+  };
+}
+
 interface GoogleLoginResponse {
   message: string;
   accessToken: string;
@@ -133,6 +146,7 @@ export class LoginComponent implements AfterViewInit {
 
     window.google.accounts.id.initialize({
       client_id: '479066428240-7200umn2fb311kk67l168hi5kif3nlrn.apps.googleusercontent.com',
+
       callback: (response: any) => {
         this.ngZone.run(() => {
           this.handleGoogleLogin(response);
@@ -169,25 +183,55 @@ export class LoginComponent implements AfterViewInit {
 
     const { email, password } = this.loginForm.getRawValue();
 
-    // DEMO CREDENTIALS
+    // SEND LOGIN REQUEST
 
-    const demoEmail = 'teamlead@company.com';
-    const demoPassword = 'TeamLead@123';
+    this.http.post<LoginResponse>(
+      'http://localhost:3000/auth/login',
+      {
+        email,
+        password
+      }
+    ).subscribe({
+      next: (result) => {
+        // STORE LOGIN STATE
 
-    if (
-      email === demoEmail &&
-      password === demoPassword
-    ) {
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('userRole', 'Team Lead');
-      localStorage.setItem('userName', 'Team Lead');
+        localStorage.setItem('isLoggedIn', 'true');
 
-      this.router.navigate(['/dashboard']);
+        localStorage.setItem(
+          'accessToken',
+          result.accessToken
+        );
 
-      return;
-    }
+        localStorage.setItem(
+          'userRole',
+          result.user.role
+        );
 
-    this.loginError = 'Invalid email or password';
+        localStorage.setItem(
+          'userName',
+          result.user.name
+        );
+
+        localStorage.setItem(
+          'userEmail',
+          result.user.email
+        );
+
+        // NAVIGATE TO DASHBOARD
+
+        this.router.navigate(['/dashboard']);
+      },
+
+      error: (error) => {
+        console.error('Login error:', error);
+
+        this.loginError =
+          error?.error?.message ??
+          'Invalid email or password';
+
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   // GOOGLE LOGIN

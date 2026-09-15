@@ -47,6 +47,14 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/tasks/tasks')
             .then(m => m.TasksComponent)
+      },
+
+      // SETTINGS
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./features/settings/settings')
+            .then(m => m.SettingsComponent)
       }
 
     ]

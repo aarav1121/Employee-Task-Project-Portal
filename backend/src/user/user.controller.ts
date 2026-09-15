@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+// import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { CreateTeamLeadDto } from './dto/create-team-lead.dto';
 import { UserService } from './user.service';
 

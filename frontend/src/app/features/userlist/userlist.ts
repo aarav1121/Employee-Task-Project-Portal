@@ -196,15 +196,6 @@ export class Userlist implements OnInit, OnDestroy {
 
   }
 
-  // COMPONENT DESTROY
-
-  ngOnDestroy(): void {
-
-    this.destroy$.next();
-    this.destroy$.complete();
-
-  }
-
   // OPEN USER FORM
 
   openUserForm(): void {
@@ -282,6 +273,80 @@ export class Userlist implements OnInit, OnDestroy {
         },
 
       });
+
+    }
+
+  // DELETE USER
+
+  deleteUser(user: User): void {
+
+    // CONFIRMATION
+
+    const confirmed =
+      window.confirm(
+        `Are you sure you want to delete ${user.name}?`
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    // DELETE USER
+
+    this.userService
+      .deleteUser(user.id)
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+
+        next: () => {
+
+          // CHECK CURRENT PAGE
+
+          const isLastUserOnPage =
+            this.users.length === 1;
+
+          const shouldGoToPreviousPage =
+            isLastUserOnPage &&
+            this.currentPage > 1;
+
+          if (shouldGoToPreviousPage) {
+
+            this.loadUsersPage(
+              this.currentPage - 1
+            );
+
+            return;
+          }
+
+          // RELOAD CURRENT PAGE
+
+          this.loadUsersPage(
+            this.currentPage
+          );
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Error deleting user:',
+            error
+          );
+
+        },
+
+      });
+
+  }
+
+  // COMPONENT DESTROY
+
+  ngOnDestroy(): void {
+
+    this.destroy$.next();
+    this.destroy$.complete();
 
   }
 }

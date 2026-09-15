@@ -1,118 +1,58 @@
 <div class="userlist-page">
-
   <!-- HEADER -->
 
   <header class="userlist-header">
-
     <div>
-
       <h2>Employees</h2>
 
-      <p>
-        Manage employees in the system.
-      </p>
-
+      <p>Manage employees in the system.</p>
     </div>
 
-    <button
-      type="button"
-      class="add-user"
-      (click)="openUserForm()"
-    >
-
+    <button type="button" class="add-user" (click)="openUserForm()">
       <span>+</span>
 
       Add User
-
     </button>
-
   </header>
 
   <!-- ADD USER MODAL -->
 
   @if (showUserForm) {
-
-    <div
-      class="modal-overlay"
-      (click)="closeUserForm()"
-    >
-
-      <div
-        class="modal-card"
-        (click)="$event.stopPropagation()"
-      >
-
+    <div class="modal-overlay" (click)="closeUserForm()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
         <!-- MODAL HEADER -->
 
         <div class="modal-header">
-
           <div>
+            <h3>Add New User</h3>
 
-            <h3>
-              Add New User
-            </h3>
-
-            <p>
-              Enter the employee information below.
-            </p>
-
+            <p>Enter the employee information below.</p>
           </div>
 
-          <button
-            type="button"
-            class="close-button"
-            (click)="closeUserForm()"
-            aria-label="Close"
-          >
-
+          <button type="button" class="close-button" (click)="closeUserForm()" aria-label="Close">
             ×
-
           </button>
-
         </div>
 
         <!-- USER FORM -->
 
-        <form
-          [formGroup]="userForm"
-          (ngSubmit)="createUser()"
-        >
-
+        <form [formGroup]="userForm" (ngSubmit)="createUser()">
           <!-- NAME -->
 
           <div class="form-group">
+            <label for="name"> Name </label>
 
-            <label for="name">
-              Name
-            </label>
+            <input id="name" type="text" formControlName="name" placeholder="Enter name" />
 
-            <input
-              id="name"
-              type="text"
-              formControlName="name"
-              placeholder="Enter name"
-            />
-
-            @if (
-              userForm.controls.name.touched &&
-              userForm.controls.name.invalid
-            ) {
-
-              <small class="error-message">
-                Name is required.
-              </small>
-
+            @if (userForm.controls.name.touched && userForm.controls.name.invalid) {
+              <small class="error-message"> Name is required. </small>
             }
-
           </div>
 
           <!-- EMAIL -->
 
           <div class="form-group">
-
-            <label for="email">
-              Email
-            </label>
+            <label for="email"> Email </label>
 
             <input
               id="email"
@@ -122,39 +62,21 @@
               autocomplete="email"
             />
 
-            @if (
-              userForm.controls.email.touched &&
-              userForm.controls.email.invalid
-            ) {
-
+            @if (userForm.controls.email.touched && userForm.controls.email.invalid) {
               <small class="error-message">
-
-                @if (
-                  userForm.controls.email.errors?.['required']
-                ) {
-
+                @if (userForm.controls.email.errors?.['required']) {
                   Email is required.
-
-                }
-                @else {
-
+                } @else {
                   Enter a valid email address.
-
                 }
-
               </small>
-
             }
-
           </div>
 
           <!-- DEPARTMENT -->
 
           <div class="form-group">
-
-            <label for="department">
-              Department
-            </label>
+            <label for="department"> Department </label>
 
             <input
               id="department"
@@ -163,29 +85,17 @@
               placeholder="Enter department"
             />
 
-            @if (
-              userForm.controls.department.touched &&
-              userForm.controls.department.invalid
-            ) {
-
-              <small class="error-message">
-                Department is required.
-              </small>
-
+            @if (userForm.controls.department.touched && userForm.controls.department.invalid) {
+              <small class="error-message"> Department is required. </small>
             }
-
           </div>
 
           <!-- PASSWORD -->
 
           <div class="form-group">
-
-            <label for="password">
-              Password
-            </label>
+            <label for="password"> Password </label>
 
             <div class="password-wrapper">
-
               <input
                 id="password"
                 [type]="showPassword ? 'text' : 'password'"
@@ -194,125 +104,62 @@
                 autocomplete="new-password"
               />
 
-              <button
-                type="button"
-                class="password-toggle"
-                (click)="togglePassword()"
-              >
-
+              <button type="button" class="password-toggle" (click)="togglePassword()">
                 {{ showPassword ? 'Hide' : 'Show' }}
-
               </button>
-
             </div>
 
-            @if (
-              userForm.controls.password.touched &&
-              userForm.controls.password.invalid
-            ) {
-
+            @if (userForm.controls.password.touched && userForm.controls.password.invalid) {
               <small class="error-message">
-
-                @if (
-                  userForm.controls.password.errors?.['required']
-                ) {
-
+                @if (userForm.controls.password.errors?.['required']) {
                   Password is required.
-
-                }
-                @else if (
-                  userForm.controls.password.errors?.['minlength']
-                ) {
-
+                } @else if (userForm.controls.password.errors?.['minlength']) {
                   Password must be at least 8 characters.
-
                 }
-
               </small>
-
             }
-
           </div>
 
           <!-- FORM ACTIONS -->
 
           <div class="form-actions">
+            <button type="button" class="cancel-button" (click)="closeUserForm()">Cancel</button>
 
-            <button
-              type="button"
-              class="cancel-button"
-              (click)="closeUserForm()"
-            >
-
-              Cancel
-
-            </button>
-
-            <button
-              type="submit"
-              class="save-button"
-              [disabled]="userForm.invalid"
-            >
-
+            <button type="submit" class="save-button" [disabled]="userForm.invalid">
               Save User
-
             </button>
-
           </div>
-
         </form>
-
       </div>
-
     </div>
-
   }
 
   <!-- USERS TABLE -->
 
   <div class="user-table-container">
-
     <div class="table-wrapper">
-
       <table class="user-table">
-
         <!-- TABLE HEADER -->
 
         <thead>
-
           <tr>
+            <th>ID</th>
 
-            <th>
-              ID
-            </th>
+            <th>Name</th>
 
-            <th>
-              Name
-            </th>
+            <th>Email</th>
 
-            <th>
-              Email
-            </th>
+            <th>Department</th>
 
-            <th>
-              Department
-            </th>
-
+            <th>Actions</th>
           </tr>
-
         </thead>
 
         <!-- TABLE BODY -->
 
         <tbody>
-
-          @for (
-            user of users;
-            track user.id
-          ) {
-
+          @for (user of users; track user.id) {
             <tr>
-
               <td>
                 {{ user.id }}
               </td>
@@ -326,88 +173,112 @@
               </td>
 
               <td>
-
                 <span class="department">
                   {{ user.department }}
                 </span>
-
               </td>
 
-            </tr>
+              <td class="actions-cell">
+                <button
+                  type="button"
+                  class="delete-button"
+                  (click)="deleteUser(user)"
+                  aria-label="Delete user"
+                >
+                  <svg
+                    class="delete-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M4 7H20"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                    />
 
+                    <path
+                      d="M9 7V5.5C9 4.67 9.67 4 10.5 4H13.5C14.33 4 15 4.67 15 5.5V7"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                    />
+
+                    <path
+                      d="M6.5 7L7.2 19C7.25 19.56 7.72 20 8.28 20H15.72C16.28 20 16.75 19.56 16.8 19L17.5 7"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+
+                    <path
+                      d="M10 10.5V16.5"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                    />
+
+                    <path
+                      d="M14 10.5V16.5"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+
+                  <span>Delete</span>
+                </button>
+              </td>
+            </tr>
           }
 
           <!-- EMPTY STATE -->
 
           @if (users.length === 0) {
-
             <tr>
-
-              <td
-                colspan="4"
-                class="empty-state"
-              >
-
-                No users found.
-
-              </td>
-
+              <td colspan="5" class="empty-state">No users found.</td>
             </tr>
-
           }
-
         </tbody>
-
       </table>
-
     </div>
 
     <!-- PAGINATION -->
 
     @if (totalUsers > 0) {
-
       <div class="pagination">
-
         <!-- PAGINATION INFORMATION -->
 
         <div class="pagination-info">
-
           Showing
           {{ (currentPage - 1) * pageSize + 1 }}
           -
-          {{
-            currentPage * pageSize > totalUsers
-              ? totalUsers
-              : currentPage * pageSize
-          }}
+          {{ currentPage * pageSize > totalUsers ? totalUsers : currentPage * pageSize }}
           of
           {{ totalUsers }}
           users
-
         </div>
 
         <!-- PAGINATION CONTROL -->
 
         <div class="pagination-controls">
-
           <button
             type="button"
             class="pagination-button"
             (click)="previousPage()"
             [disabled]="currentPage === 1"
           >
-
             Previous
-
           </button>
 
           <span class="page-number">
-
             Page
             {{ currentPage }}
             of
             {{ totalPages }}
-
           </span>
 
           <button
@@ -416,17 +287,10 @@
             (click)="nextPage()"
             [disabled]="currentPage === totalPages"
           >
-
             Next
-
           </button>
-
         </div>
-
       </div>
-
     }
-
   </div>
-
 </div>

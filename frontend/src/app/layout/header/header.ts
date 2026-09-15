@@ -1,49 +1,92 @@
-
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
-import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
-
   selector: 'app-header',
-
   standalone: true,
-
-  imports: [],
-
+  imports: [
+    CommonModule,
+    RouterLink,
+  ],
   templateUrl: './header.html',
-
-  styleUrl: './header.css'
-
+  styleUrl: './header.css',
 })
-
 export class HeaderComponent {
 
-  private readonly router = inject(Router);
+  // SERVICES
 
-  // PROFILE MENU
+  private authService = inject(AuthService);
 
-  showProfileMenu = false;
+  private platformId = inject(PLATFORM_ID);
 
-  
-  // TOGGLE PROFILE MENU
+  // USER MENU
 
-  toggleProfileMenu(): void {
+  showUserMenu = false;
 
-    this.showProfileMenu =
-      !this.showProfileMenu;
+  // USER INFORMATION
 
+  userName = 'User';
+
+  userRole = 'Team Lead';
+
+  // AVATAR
+
+  get userInitial(): string {
+    return this.userName
+      .charAt(0)
+      .toUpperCase();
+  }
+
+  // COMPONENT INITIALIZATION
+
+  ngOnInit(): void {
+
+    if (
+      isPlatformBrowser(this.platformId)
+    ) {
+
+      this.userName =
+        localStorage.getItem('userName') ||
+        'User';
+
+      this.userRole =
+        localStorage.getItem('userRole') ||
+        'Team Lead';
+
+    }
+
+  }
+
+  // TOGGLE MENU
+
+  toggleUserMenu(): void {
+    this.showUserMenu =
+      !this.showUserMenu;
+  }
+
+  // CLOSE MENU
+
+  closeUserMenu(): void {
+    this.showUserMenu = false;
+  }
+
+  // PROFILE
+
+  openProfile(): void {
+    this.closeUserMenu();
+
+    console.log('Profile clicked');
   }
 
   // LOGOUT
 
-  Logout(): void{
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userName');
-
-    this.showProfileMenu = false;
-    this.router.navigate(['/login']);
-
+  logout(): void {
+    this.authService.logout();
   }
+
 }
