@@ -1,4 +1,9 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  inject,
+} from '@angular/core';
 import { DatePipe } from '@angular/common';
 
 import {
@@ -112,6 +117,9 @@ export class TasksComponent {
 
   private readonly destroyRef = inject(DestroyRef);
 
+  private readonly changeDetectorRef =
+    inject(ChangeDetectorRef);
+
   // CONSTRUCTOR
 
   constructor(
@@ -169,6 +177,8 @@ export class TasksComponent {
         this.employees = users;
 
         this.applyFilters();
+
+        this.changeDetectorRef.markForCheck();
       });
 
     // LOAD USERS
@@ -204,6 +214,8 @@ export class TasksComponent {
             response.page;
 
           this.updateTaskDisplay();
+
+          this.changeDetectorRef.markForCheck();
         },
 
         error: (error) => {
@@ -689,6 +701,10 @@ export class TasksComponent {
 
             this.updateTaskDisplay();
 
+            // UPDATE VIEW
+
+            this.changeDetectorRef.markForCheck();
+
             // CLOSE FORM
 
             this.closeAssignmentForm();
@@ -779,6 +795,10 @@ export class TasksComponent {
           // UPDATE TASK DISPLAY
 
           this.updateTaskDisplay();
+
+          // UPDATE VIEW
+
+          this.changeDetectorRef.markForCheck();
 
           // CLOSE FORM
 
@@ -915,6 +935,10 @@ export class TasksComponent {
           // UPDATE UI IMMEDIATELY
 
           this.updateTaskDisplay();
+
+          // UPDATE VIEW
+
+          this.changeDetectorRef.markForCheck();
 
           // REFILL CURRENT PAGE IF NEEDED
 

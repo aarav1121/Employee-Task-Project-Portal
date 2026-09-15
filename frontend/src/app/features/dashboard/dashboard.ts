@@ -1,12 +1,11 @@
 import {
+  ChangeDetectorRef,
   Component,
   DestroyRef,
-  inject
+  inject,
 } from '@angular/core';
 
 import { DatePipe } from '@angular/common';
-
-import { Router } from '@angular/router';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -19,13 +18,13 @@ import { RecentActivity } from '../../core/models/activity.model';
   standalone: true,
   imports: [DatePipe],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css'
+  styleUrl: './dashboard.css',
 })
 export class DashboardComponent {
-
   private readonly taskService = inject(TaskService);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly router = inject(Router);
+  private readonly changeDetectorRef =
+    inject(ChangeDetectorRef);
 
   totalAssignedTasks = 0;
   acceptanceRate = 0;
@@ -58,14 +57,15 @@ export class DashboardComponent {
   }
 
   // LOAD DASHBOARD DATA
+
   private loadDashboardMetrics(): void {
     this.taskService
       .getDashboardMetrics()
       .pipe(
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
-        next: metrics => {
+        next: (metrics) => {
           this.totalAssignedTasks =
             metrics.totalAssignedTasks;
 
@@ -122,35 +122,41 @@ export class DashboardComponent {
 
           this.lowPercentage =
             metrics.lowPercentage;
+
+          this.changeDetectorRef.markForCheck();
         },
 
-        error: error => {
+        error: (error) => {
           console.error(
             'Failed to load dashboard metrics:',
             error,
           );
-        }
+        },
       });
   }
 
   // LOAD RECENT ACTIVITIES
+
   private loadRecentActivities(): void {
     this.taskService
       .getRecentActivities()
       .pipe(
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
-        next: activities => {
-          this.recentActivities = activities;
+        next: (activities) => {
+          this.recentActivities =
+            activities;
+
+          this.changeDetectorRef.markForCheck();
         },
 
-        error: error => {
+        error: (error) => {
           console.error(
             'Failed to load recent activities:',
             error,
           );
-        }
+        },
       });
   }
 }
